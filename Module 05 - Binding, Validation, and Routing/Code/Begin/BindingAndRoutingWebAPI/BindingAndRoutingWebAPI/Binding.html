@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Binding Data Example</title>
+    <script src="Scripts/jquery-2.1.4.js"></script>
+
+    <script>
+        var uri = "api/Binding", var1 = 0, var2 = 0;
+
+        function add() {
+            $.ajax({
+                url: uri + "/Add?var1=" + var1 + "&var2=" + var2,
+                type: "GET",
+                success: function (data) { $("#results").html(data); }
+            });
+        }
+
+        function subtract() {
+            $.ajax({
+                url: uri + "/Subtract?var1=" + var1,
+                type: "POST",
+                dataType: "json",
+                data: var2,
+                contentType: "application/json;charset=utf-8",
+                success: function (data) { $("#results").html(data); }
+            });
+        }
+
+        function multiply() {
+            var math = {
+                variable1: var1,
+                variable2: var2
+            };
+
+            $.ajax({
+                url: uri + "/Multiply",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify(math),
+                contentType: "application/json;charset=utf-8",
+                success: function (data) { $("#results").html(data); }
+            });
+        }
+
+        function divide() {
+            $.ajax({
+                url: uri + "/Divide?Variable1=" + var1 + "&Variable2=" + var2,
+                type: "GET",
+                success: function (data) { $("#results").html(data); }
+            });
+        }
+
+        function calculate() {
+            var1 = $("#textVar1").val();
+            var2 = $("#textVar2").val();
+            operation = $("#selectOp").val();
+
+            if (operation == "Add") add();
+            if (operation == "Subtract") subtract();
+            if (operation == "Multiply") multiply();
+            if (operation == "Divide") divide();
+        }
+
+    </script>
+</head>
+<body>
+    <h2>Calculator Binding Example</h2>
+    <input type="text" id="textVar1" size="5" />
+    <select id="selectOp">
+        <option value="Add">+</option>
+        <option value="Subtract">-</option>
+        <option value="Multiply">*</option>
+        <option value="Divide">/</option>
+    </select>
+    <input type="text" id="textVar2" size="5" />
+    = <span id="results"></span><br/>
+
+    <input type="button" value="Calculate" onclick="calculate();" />
+</body>
+</html>
